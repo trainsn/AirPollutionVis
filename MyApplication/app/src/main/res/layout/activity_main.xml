@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    tools:context="com.a12599.myapplication.MainActivity">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tl1"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:stretchColumns="0,3"
+        android:id="@+id/tl1">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tr1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text3"
+                android:id="@+id/getDataView"
+                android:gravity="center|bottom"
+                android:textSize="20sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="5sp"
+                android:background="@drawable/textviewstate"
+                android:clickable="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text4"
+                android:id="@+id/markerView"
+                android:gravity="center|bottom"
+                android:textSize="20sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="5sp"
+                android:background="@drawable/textviewstate"
+                android:clickable="true" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tr2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text1"
+                android:id="@+id/textView1"
+                android:gravity="center|bottom"
+                android:textSize="20sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="5sp"
+                android:background="@color/button1"
+                android:clickable="true" />
+
+            <Spinner
+                style="@style/spinner1"
+                android:id="@+id/spinner1"
+                android:prompt="@string/text1"
+                android:entries="@array/pollution"
+                android:spinnerMode="dialog"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="30dp"
+                android:gravity="center|start" />
+
+            <View
+                android:layout_width="@dimen/line_width"
+                android:layout_height="match_parent"
+                android:background="@color/line"
+                android:id="@+id/view1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text2"
+                android:id="@+id/textView2"
+                android:gravity="center|bottom"
+                android:textSize="20sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="5sp"
+                android:background="@drawable/textviewstate"
+                android:clickable="true" />
+        </TableRow>
+
+    </TableLayout>
+
+</RelativeLayout>

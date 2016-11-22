@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="text1">Pollutant:</string>
+    <string name="text2">Locate</string>
+    <string name="text3">Data</string>
+    <string name="text4">Marker</string>
+    <string-array name="pollution">
+        <item>PM2.5</item>
+        <item>PM10</item>
+        <item>SO2</item>
+    </string-array>
+</resources>
