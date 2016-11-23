@@ -4,6 +4,7 @@
     <string name="text2">Locate</string>
     <string name="text3">Data</string>
     <string name="text4">Marker</string>
+    <string name="text5">Voronoi</string>
     <string-array name="pollution">
         <item>PM2.5</item>
         <item>PM10</item>

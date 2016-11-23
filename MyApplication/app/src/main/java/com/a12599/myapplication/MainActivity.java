@@ -24,6 +24,9 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.map.WeightedLatLng;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -43,6 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.security.spec.ECField;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
 
-    private TextView textView2,getDataView,markerView;
+    private TextView textView2,getDataView,markerView,voronoiView;
     private Spinner Spinner1;
     private Marker marker;
     private HeatMap heatmap;
@@ -75,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     private double pm10[][] = new double[maxCityNumber][maxMonitorNumber];
     private double so2[][] = new double[maxCityNumber][maxMonitorNumber];
     int cityCounter = 0, monitorNumber[] = new int[maxCityNumber],monitorCounter;
-    int i,j;
     int cannotFind=0;
 
     @Override
@@ -177,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
         markerView = (TextView) findViewById(R.id.markerView);
         markerView.setOnClickListener(new MarkerTxtClickListener());
 
-
+        markerView = (TextView) findViewById(R.id.voronoiView);
+        markerView.setOnClickListener(new VoronoTxtClickListener());
 
         Spinner1 = (Spinner) findViewById(R.id.spinner1);
         Spinner1.setOnItemSelectedListener(new SpinSelectedListener1());
@@ -431,6 +435,107 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    class VoronoTxtClickListener implements View.OnClickListener
+    {
+        Triangle initialTriangle;
+        Triangulation dt;
+
+        @Override
+        public void onClick(View v) {
+            /*double minLa=500,minLo=500,maxLa=0,maxLo=0;
+            for (int i=0;i<List.size();i++)
+            {
+                double coord[] = new double[2];
+                coord[0]=List.get(i).latitude;
+                coord[1]=List.get(i).longitude;
+
+                if (coord[0]<minLa)
+                {
+                    minLa=coord[0];
+                }else if (coord[0]>maxLa)
+                {
+                    maxLa=coord[0];
+                }
+                if (coord[1]<minLo)
+                {
+                    minLo=coord[1];
+                }else if (coord[1]>maxLo)
+                {
+                    maxLo=coord[1];
+                }
+            }
+
+            double southLa= minLa-(maxLa-minLa),
+                    northLa= maxLa+(maxLa-minLa),
+                    westLo=minLo-(maxLo-minLo),
+                    eastLo= maxLo+(maxLo-minLo);*/
+
+            initialTriangle = new Triangle(
+                    new Pnt(35,113),
+                    new Pnt( 45, 113),
+                    new Pnt(40, 119));
+            dt=new Triangulation(initialTriangle);
+
+            for (int i=500;i<List.size();i++)
+            {
+                double coord[] = new double[2];
+                coord[0]=List.get(i).latitude;
+                coord[1]=List.get(i).longitude;
+
+                Pnt site = new Pnt(coord);
+                addSite(site);
+            }
+
+            HashSet<Pnt> done = new HashSet<Pnt>(initialTriangle);
+            for (Triangle triangle: dt)
+                for (Pnt site:triangle)
+                {
+                    if (done.contains(site)) continue;
+                    done.add(site);
+                    List<Triangle> list =dt.surroundingTriangles(site,triangle);
+                    Pnt[] vertices = new Pnt[list.size()];
+                    int i=0;
+                    for (Triangle tri:list)
+                        vertices[i++]=tri.getCircumcenter();
+                    draw(vertices);
+                }
+        }
+
+        /**
+         * Add a new site to the DT.
+         * @param point the site to add
+         */
+        public void addSite(Pnt point) {
+            dt.delaunayPlace(point);
+        }
+
+        /**
+         * Draw a polygon.
+         * @param polygon an array of polygon vertices
+         */
+        public void draw (Pnt[] polygon) {
+            double latitude,longitude;
+            List<LatLng> pts = new ArrayList<LatLng>();
+            for (int i = 0; i < polygon.length; i++) {
+                latitude =  polygon[i].coord(0);
+                longitude =  polygon[i].coord(1);
+                LatLng point = new LatLng(latitude,longitude);
+                pts.add(point);
+            }
+            //构建用户绘制多边形的Option对象
+            OverlayOptions polygonOption = new PolygonOptions()
+                    .points(pts)
+                    .stroke(new Stroke(5, 0xAA00FF00))
+                    .fillColor(0xAAFFFF00);
+            //在地图上添加多边形Option，用于显示
+            mBaiduMap.addOverlay(polygonOption);
+        }
+
+        public void drawAllVoronoi(List<LatLng> position)
+        {
+
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

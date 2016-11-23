@@ -49,6 +49,18 @@
                 android:paddingBottom="5sp"
                 android:background="@drawable/textviewstate"
                 android:clickable="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text5"
+                android:id="@+id/voronoiView"
+                android:gravity="center|bottom"
+                android:textSize="20sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="5sp"
+                android:background="@drawable/textviewstate"
+                android:clickable="true" />
         </TableRow>
 
         <TableRow
