@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean firstLocate=true;
     private boolean firstDraw=true;
     private boolean marked=false;
+    private boolean voronoied= false;
     private List<LatLng> List = new ArrayList<LatLng>();
     private List<WeightedLatLng> weigthedList = new ArrayList<WeightedLatLng>();
     private int position = 0;
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         //while (!loadData);
         for (int i=0;i<1;i++)
-            for (int j=0;j<monitorNumber[i]-8;j++)
+            for (int j=0;j<monitorNumber[i]-1;j++)
             {
                 mSearch[i][j] = GeoCoder.newInstance();
                 mSearch[i][j].setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener1());
@@ -231,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v)
         {
             for (int i=0;i<1;i++)
-                for (int j=1;j<monitorNumber[i]-8;j++)
+                for (int j=1;j<monitorNumber[i]-1;j++)
                 {
                     mSearch[i][j].geocode(new GeoCodeOption()
                             .city(cityName[i])
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 marked=true;
                 int count = 0;
                 for (int i = 0; i < cityCounter; i++) {
-                    for (int j = 1; j < monitorNumber[i] - 8; j++) {
+                    for (int j = 1; j < monitorNumber[i] - 1; j++) {
                         LatLng temp= List.get(count+j+500-1);
                         //传入经纬度
                         LatLng point = new LatLng(temp.latitude, temp.longitude);
@@ -401,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                 int count = 0;
                 for (int i = 0; i < cityCounter; i++) {
-                    for (int j = 1; j < monitorNumber[i] - 8; j++) {
+                    for (int j = 1; j < monitorNumber[i] - 1; j++) {
                         switch (position) {
                             case 0:
                                 WeightedLatLng temp1 = new WeightedLatLng(List.get(count + j + 500 -1), pm25[i][j] / 10);
@@ -442,63 +443,44 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            /*double minLa=500,minLo=500,maxLa=0,maxLo=0;
-            for (int i=0;i<List.size();i++)
+            if (voronoied==false)
             {
-                double coord[] = new double[2];
-                coord[0]=List.get(i).latitude;
-                coord[1]=List.get(i).longitude;
+                voronoied=true;
+                initialTriangle = new Triangle(
+                        new Pnt(35,113),
+                        new Pnt( 45, 113),
+                        new Pnt(40, 119));
+                dt=new Triangulation(initialTriangle);
 
-                if (coord[0]<minLa)
+                for (int i=500;i<List.size();i++)
                 {
-                    minLa=coord[0];
-                }else if (coord[0]>maxLa)
-                {
-                    maxLa=coord[0];
+                    double coord[] = new double[2];
+                    coord[0]=List.get(i).latitude;
+                    coord[1]=List.get(i).longitude;
+
+                    Pnt site = new Pnt(coord);
+                    addSite(site);
                 }
-                if (coord[1]<minLo)
-                {
-                    minLo=coord[1];
-                }else if (coord[1]>maxLo)
-                {
-                    maxLo=coord[1];
-                }
+
+                HashSet<Pnt> done = new HashSet<Pnt>(initialTriangle);
+                for (Triangle triangle: dt)
+                    for (Pnt site:triangle)
+                    {
+                        if (done.contains(site)) continue;
+                        done.add(site);
+                        List<Triangle> list =dt.surroundingTriangles(site,triangle);
+                        Pnt[] vertices = new Pnt[list.size()];
+                        int i=0;
+                        for (Triangle tri:list)
+                            vertices[i++]=tri.getCircumcenter();
+                        draw(vertices);
+                    }
+                DrawBoundary();
+            }else {
+                voronoied=false;
+                mBaiduMap.clear();
             }
 
-            double southLa= minLa-(maxLa-minLa),
-                    northLa= maxLa+(maxLa-minLa),
-                    westLo=minLo-(maxLo-minLo),
-                    eastLo= maxLo+(maxLo-minLo);*/
-
-            initialTriangle = new Triangle(
-                    new Pnt(35,113),
-                    new Pnt( 45, 113),
-                    new Pnt(40, 119));
-            dt=new Triangulation(initialTriangle);
-
-            for (int i=500;i<List.size();i++)
-            {
-                double coord[] = new double[2];
-                coord[0]=List.get(i).latitude;
-                coord[1]=List.get(i).longitude;
-
-                Pnt site = new Pnt(coord);
-                addSite(site);
-            }
-
-            HashSet<Pnt> done = new HashSet<Pnt>(initialTriangle);
-            for (Triangle triangle: dt)
-                for (Pnt site:triangle)
-                {
-                    if (done.contains(site)) continue;
-                    done.add(site);
-                    List<Triangle> list =dt.surroundingTriangles(site,triangle);
-                    Pnt[] vertices = new Pnt[list.size()];
-                    int i=0;
-                    for (Triangle tri:list)
-                        vertices[i++]=tri.getCircumcenter();
-                    draw(vertices);
-                }
         }
 
         /**
@@ -525,15 +507,57 @@ public class MainActivity extends AppCompatActivity {
             //构建用户绘制多边形的Option对象
             OverlayOptions polygonOption = new PolygonOptions()
                     .points(pts)
-                    .stroke(new Stroke(5, 0xAA00FF00))
-                    .fillColor(0xAAFFFF00);
+                    .stroke(new Stroke(3, 0xAA00FF00))
+                    .fillColor(0x99FFFF00);
             //在地图上添加多边形Option，用于显示
             mBaiduMap.addOverlay(polygonOption);
         }
 
-        public void drawAllVoronoi(List<LatLng> position)
+        public void DrawBoundary()
         {
+            List<LatLng> pts = new ArrayList<LatLng>();
+            InputStream inputStream = getResources().openRawResource(R.raw.beijingboundary);
+            InputStreamReader inputStreamReader=null;
+            try{
+                inputStreamReader = new InputStreamReader(inputStream,"utf-8");
+            } catch (UnsupportedEncodingException e1)
+            {
+                e1.printStackTrace();
+            }
 
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            StringBuffer sb= new  StringBuffer("");
+            String line;
+            int row=0;
+            double longitude=0,latitude=0;
+            try {
+                while ((line= reader.readLine()) != null)
+                {
+                    if (row==0)
+                    {
+                        longitude= Double.parseDouble(line);
+                    }
+                    else
+                    {
+                        latitude=Double.parseDouble(line);
+                    }
+                    row=(row+1)%2;
+                    if (row==0) {
+                        LatLng point = new LatLng(latitude, longitude);
+                        pts.add(point);
+                    }
+                }
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            //构建用户绘制多边形的Option对象
+            OverlayOptions polygonOption = new PolygonOptions()
+                    .points(pts)
+                    .stroke(new Stroke(5, 0xAAFFFF00))
+                    .fillColor(0x990000ff);
+            //在地图上添加多边形Option，用于显示
+            mBaiduMap.addOverlay(polygonOption);
         }
     }
     @Override
