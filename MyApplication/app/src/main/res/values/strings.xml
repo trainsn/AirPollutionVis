@@ -1,13 +1,19 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="text1">Pollutant:</string>
-    <string name="text2">Locate</string>
-    <string name="text3">Data</string>
-    <string name="text4">Marker</string>
-    <string name="text5">Voronoi</string>
+    <string name="app_name">AirPollutionVis</string>
+    <string name="text11">Pollutant:</string>
+    <string name="text12">Refresh</string>
+    <string name="text13">Locate</string>
+    <string name="text21">Time:</string>
+    <string name="text22">Draw</string>
+    <string name="text23">Marker</string>
+    <string name="text01">Voronoi</string>
     <string-array name="pollution">
-        <item>PM2.5</item>
-        <item>PM10</item>
-        <item>SO2</item>
+        <item>aqi</item>
+        <item>pm25</item>
+        <item>pm10</item>
+        <item>co</item>
+        <item>so2</item>
+        <item>no2</item>
+        <item>o3</item>
     </string-array>
 </resources>

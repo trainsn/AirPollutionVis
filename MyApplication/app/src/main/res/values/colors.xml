@@ -8,4 +8,5 @@
     <color name="line">#868686</color>
     <color name="start">#66e100</color>
     <color name="end">#e10000</color>
+    <color name="none">#00AAAAAA</color>
 </resources>
