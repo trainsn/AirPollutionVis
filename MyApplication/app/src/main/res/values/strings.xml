@@ -1,12 +1,22 @@
 <resources>
     <string name="app_name">AirPollutionVis</string>
-    <string name="text11">Pollutant:</string>
-    <string name="text12">Refresh</string>
-    <string name="text13">Locate</string>
-    <string name="text21">Time:</string>
-    <string name="text22">Draw</string>
-    <string name="text23">Marker</string>
-    <string name="text01">Voronoi</string>
+    <string name="text11">污染物：</string>
+    <string name="text12">刷新数据</string>
+    <string name="text13">定位</string>
+    <string name="text21">时间：</string>
+    <string name="text22">绘制热力图</string>
+    <string name="text23">监测点</string>
+    <string name="text00">城市：</string>
+    <string name="text01">Voronoi图</string>
+    <string name="text02">详细信息</string>
+    <string name="text03">城市</string>
+    <string name="text1">时间段：</string>
+    <string name="text2">绘制折线图</string>
+    <string name="text3">返回地图</string>
+    <string-array name="time">
+        <item>最近一天</item>
+        <item>最近一月</item>
+    </string-array>
     <string-array name="pollution">
         <item>aqi</item>
         <item>pm25</item>
@@ -15,5 +25,197 @@
         <item>so2</item>
         <item>no2</item>
         <item>o3</item>
+    </string-array>
+    <string-array name="city">
+        <item>安阳</item>
+        <item>鞍山</item>
+        <item>保定</item>
+        <item>包头</item>
+        <item>北京</item>
+        <item>北海</item>
+        <item>宝鸡</item>
+        <item>本溪</item>
+        <item>滨州</item>
+        <item>常州</item>
+        <item>常德</item>
+        <item>常熟</item>
+        <item>成都</item>
+        <item>承德</item>
+        <item>沧州</item>
+        <item>潮州</item>
+        <item>赤峰</item>
+        <item>重庆</item>
+        <item>长春</item>
+        <item>长沙</item>
+        <item>长治</item>
+        <item>东莞</item>
+        <item>东营</item>
+        <item>丹东</item>
+        <item>大同</item>
+        <item>大庆</item>
+        <item>大连</item>
+        <item>德州</item>
+        <item>德阳</item>
+        <item>佛山</item>
+        <item>富阳</item>
+        <item>抚顺</item>
+        <item>福州</item>
+        <item>广州</item>
+        <item>桂林</item>
+        <item>贵阳</item>
+        <item>合肥</item>
+        <item>呼和浩特</item>
+        <item>哈尔滨</item>
+        <item>惠州</item>
+        <item>杭州</item>
+        <item>河源</item>
+        <item>海口</item>
+        <item>海门</item>
+        <item>淮安</item>
+        <item>湖州</item>
+        <item>菏泽</item>
+        <item>葫芦岛</item>
+        <item>衡水</item>
+        <item>邯郸</item>
+        <item>九江</item>
+        <item>即墨</item>
+        <item>句容</item>
+        <item>吉林</item>
+        <item>嘉兴</item>
+        <item>嘉峪关</item>
+        <item>揭阳</item>
+        <item>江门</item>
+        <item>江阴</item>
+        <item>济南</item>
+        <item>济宁</item>
+        <item>焦作</item>
+        <item>胶南</item>
+        <item>胶州</item>
+        <item>荆州</item>
+        <item>金华</item>
+        <item>金坛</item>
+        <item>金昌</item>
+        <item>锦州</item>
+        <item>克拉玛依</item>
+        <item>克独山子区</item>
+        <item>库尔勒</item>
+        <item>开封</item>
+        <item>昆山</item>
+        <item>昆明</item>
+        <item>临安</item>
+        <item>临汾</item>
+        <item>临沂</item>
+        <item>丽水</item>
+        <item>兰州</item>
+        <item>廊坊</item>
+        <item>拉萨</item>
+        <item>柳州</item>
+        <item>泸州</item>
+        <item>洛阳</item>
+        <item>溧阳</item>
+        <item>聊城</item>
+        <item>莱州</item>
+        <item>莱芜</item>
+        <item>莱西</item>
+        <item>连云港</item>
+        <item>梅州</item>
+        <item>牡丹江</item>
+        <item>绵阳</item>
+        <item>茂名</item>
+        <item>马鞍山</item>
+        <item>南京</item>
+        <item>南充</item>
+        <item>南宁</item>
+        <item>南昌</item>
+        <item>南通</item>
+        <item>宁波</item>
+        <item>平度</item>
+        <item>平顶山</item>
+        <item>攀枝花</item>
+        <item>盘锦</item>
+        <item>蓬莱</item>
+        <item>曲靖</item>
+        <item>泉州</item>
+        <item>清远</item>
+        <item>秦皇岛</item>
+        <item>衢州</item>
+        <item>青岛</item>
+        <item>齐齐哈尔</item>
+        <item>乳山</item>
+        <item>日照</item>
+        <item>荣成</item>
+        <item>三亚</item>
+        <item>三门峡</item>
+        <item>上海</item>
+        <item>宿迁</item>
+        <item>寿光</item>
+        <item>汕头</item>
+        <item>汕尾</item>
+        <item>沈阳</item>
+        <item>深圳</item>
+        <item>石嘴山</item>
+        <item>石家庄</item>
+        <item>绍兴</item>
+        <item>苏州</item>
+        <item>韶关</item>
+        <item>台州</item>
+        <item>唐山</item>
+        <item>天津</item>
+        <item>太仓</item>
+        <item>太原</item>
+        <item>泰安</item>
+        <item>泰州</item>
+        <item>铜川</item>
+        <item>乌鲁木齐</item>
+        <item>吴江</item>
+        <item>威海</item>
+        <item>文登</item>
+        <item>无锡</item>
+        <item>武汉</item>
+        <item>温州</item>
+        <item>渭南</item>
+        <item>潍坊</item>
+        <item>瓦房店</item>
+        <item>芜湖</item>
+        <item>厦门</item>
+        <item>咸阳</item>
+        <item>徐州</item>
+        <item>湘潭</item>
+        <item>西宁</item>
+        <item>西安</item>
+        <item>邢台</item>
+        <item>义乌</item>
+        <item>云浮</item>
+        <item>宜兴</item>
+        <item>宜宾</item>
+        <item>宜昌</item>
+        <item>岳阳</item>
+        <item>延安</item>
+        <item>扬州</item>
+        <item>烟台</item>
+        <item>玉溪</item>
+        <item>盐城</item>
+        <item>营口</item>
+        <item>银川</item>
+        <item>阳江</item>
+        <item>阳泉</item>
+        <item>中山</item>
+        <item>张家口</item>
+        <item>张家港</item>
+        <item>张家界</item>
+        <item>招远</item>
+        <item>枣庄</item>
+        <item>株洲</item>
+        <item>淄博</item>
+        <item>湛江</item>
+        <item>珠海</item>
+        <item>章丘</item>
+        <item>肇庆</item>
+        <item>自贡</item>
+        <item>舟山</item>
+        <item>诸暨</item>
+        <item>遵义</item>
+        <item>郑州</item>
+        <item>镇江</item>
     </string-array>
 </resources>

@@ -20,7 +20,20 @@
         android:stretchColumns="0,3,5">
 
         <TableRow
-            android:id="@+id/tr3"
+            android:id="@+id/tr5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:layout_span="6"
+                android:background="@color/line" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tr0"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -28,7 +41,7 @@
                 android:id="@+id/textView21"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textviewstate"
+                android:background="@color/button1"
                 android:clickable="true"
                 android:gravity="center|bottom"
                 android:paddingBottom="5sp"
@@ -85,7 +98,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tr2"
+            android:id="@+id/tr1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -98,7 +111,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tr1"
+            android:id="@+id/tr2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -164,15 +177,45 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tr0"
+            android:id="@+id/tr3"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <View
-                android:id="@+id/view0"
-                android:layout_width="@dimen/line_width"
-                android:layout_height="match_parent"
+                android:id="@+id/view101"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:layout_span="6"
                 android:background="@color/line" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tr4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView00"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/button1"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text00"
+                android:textSize="20sp" />
+            <Spinner
+                android:id="@+id/spinner3"
+                style="@style/spinner"
+                android:entries="@array/city"
+                android:gravity="center|start"
+                android:paddingBottom="5dp"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:paddingTop="5dp"
+                android:prompt="@string/text11"
+                android:spinnerMode="dialog" />
 
             <TextView
                 android:id="@+id/textView01"
@@ -184,9 +227,27 @@
                 android:paddingBottom="5sp"
                 android:paddingTop="5sp"
                 android:text="@string/text01"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_span="2"/>
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="@dimen/line_width"
+                android:layout_height="match_parent"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/textView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textviewstate"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text02"
+                android:textSize="20sp"
+                android:layout_span="3"/>
         </TableRow>
-
     </TableLayout>
-
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.a12599.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -48,26 +49,23 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import static com.baidu.mapapi.utils.SpatialRelationUtil.isPolygonContainsPoint;
 
 public class MainActivity extends AppCompatActivity {
     private final int citySize = 190;
     //private final int monitorSize = 13;
     MapView mMapView;
     BaiduMap mBaiduMap;
+    private Intent it;
     private SQLiteDatabase db;
     private Cursor c;
     private LocationClient mLocationClient;
-    private TextView textView13, textView12, textView22, textView23,textView21, textView01;
+    private TextView textView13, textView12, textView22, textView23,textView21, textView01,textView02;
     private SimpleCursorAdapter adapter;
-    private Spinner spinner1, spinner2;
+    private Spinner spinner1, spinner2, spinner3;
     private Marker marker;
     private HeatMap heatmap;
     private boolean firstLocate = true;
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean firstMark = true;
     private boolean voronoied = false;
     private boolean loadBoundary = false;
+    private String nameofpoint;
     private List<WeightedLatLng> weightedList = new ArrayList<>();
     private List<OverlayOptions> monitorList = new ArrayList<>();
     private List<Overlay> overlayList = new ArrayList<>();
@@ -82,12 +81,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean dbable = true;
 
     private double sweepLoc;
-    private final ArrayList<Point> sites = new ArrayList<>();;
-    private final ArrayList<VoronoiEdge> edgeList = new ArrayList<>();;
+    private final ArrayList<Point> sites = new ArrayList<>();
+    private final ArrayList<VoronoiEdge> edgeList = new ArrayList<>();
     private HashSet<BreakPoint> breakPoints;
     private TreeMap<ArcKey, CircleEvent> arcs;
     private TreeSet<Event> events;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +100,13 @@ public class MainActivity extends AppCompatActivity {
         db = myDBOpenHelper.getWritableDatabase();
 
         spinner2 = (Spinner) findViewById(R.id.spinner2);
-        c = db.rawQuery("select rowid _id,time from value where point=\"安阳铁佛寺\" and pollution=\"aqi\"", null);
+        c = db.rawQuery("select rowid _id,time from value group by time", null);
         if (c.moveToFirst()) {
             adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[]{"time"}, new int[]{android.R.id.text1}, 0);
             spinner2.setAdapter(adapter);
         }
         spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner3 = (Spinner) findViewById(R.id.spinner3);
 
         textView13 = (TextView) findViewById(R.id.textView13);
         textView13.setOnClickListener(new TxtClickListener13());
@@ -127,13 +126,19 @@ public class MainActivity extends AppCompatActivity {
         textView01 = (TextView) findViewById(R.id.textView01);
         textView01.setOnClickListener(new TxtClickListener01());
 
+        textView02=(TextView) findViewById(R.id.textView02);
+        textView02.setOnClickListener(new TxtClickListener02());
+
+        it =new Intent(this,Main2Activity.class);
+
         bitmap = BitmapDescriptorFactory.fromResource(R.drawable.mark);
+        nameofpoint="安阳铁佛寺";
     }
 
     //refresh
-    class TxtClickListener12 implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
+        class TxtClickListener12 implements View.OnClickListener {
+            @Override
+            public void onClick(View v) {
             new Thread() {
                 @Override
                 public void run() {
@@ -158,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                                         start1 += 10;
                                         end1 = line1.indexOf("/", start1) + 1;
                                         String s2 = s1 + line1.substring(start1, end1); //定位到每个城市的URL
-                                        String currentCity = line1.substring(line1.indexOf("g", end1) + 2, line1.indexOf("/", end1) - 1);
+                                        //String currentCity = line1.substring(line1.indexOf("g", end1) + 2, line1.indexOf("/", end1) - 1);
 
                                         //打开每个城市
                                         URL url2 = new URL(s2);
@@ -339,10 +344,9 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 voronoied = true;
-                for (int i=4;i<5;i++)
-                {
-                    List<LatLng> bound = new ArrayList<LatLng>();
-                    List<LatLng> box = new ArrayList<LatLng>();
+                int i = spinner3.getSelectedItemPosition();
+                    List<LatLng> bound = new ArrayList<>();
+                    List<LatLng> box = new ArrayList<>();
                     c = db.rawQuery(String.format("select lat,lng from boundary where city = %d",i), null);
                     double maxlat = 0, minlat = 90, maxlng = 0, minlng = 180;
                     if (c.moveToFirst()){
@@ -362,17 +366,11 @@ public class MainActivity extends AppCompatActivity {
                         }while (c.moveToNext());
                     }
                     //构建用户绘制多边形的Option对象
-                    /*OverlayOptions polygonOption = new PolygonOptions()
-                            .points(bound)
-                            .stroke(new Stroke(5, Color.BLUE))
-                            .fillColor(ContextCompat.getColor(spinner1.getContext(),R.color.none))
-                            .zIndex(8);
-                    mBaiduMap.addOverlay(polygonOption);*/
                     for (int j=0; j<bound.size();j++) {
                         Point boundPoint1 = new Point(bound.get(j).longitude, bound.get(j).latitude);
                         int next = (j == bound.size()-1) ? 0 : j + 1;
                         Point boundPoint2 = new Point(bound.get(next).longitude, bound.get(next).latitude);
-                        List<LatLng> points = new ArrayList<LatLng>();
+                        List<LatLng> points = new ArrayList<>();
                         points.add(new LatLng(boundPoint1.y,boundPoint1.x));
                         points.add(new LatLng(boundPoint2.y,boundPoint2.x));
                         OverlayOptions ooPolyline =  new PolylineOptions().width(5).color(Color.YELLOW).points(points);
@@ -391,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                     mBaiduMap.addOverlay(polygonOption1);
 
                     int monitorNum = 0;
-                    ArrayList<Point> sites = new ArrayList<Point>();
+                    ArrayList<Point> sites = new ArrayList<>();
                     c = db.rawQuery(String.format("select point,lat,lng from position where city = %d",i), null);
                     if (c.moveToFirst()) {
                         do {
@@ -499,18 +497,27 @@ public class MainActivity extends AppCompatActivity {
                                     e.p2 = near;
                             }
 
-                            List<LatLng> points = new ArrayList<LatLng>();
+                            List<LatLng> points = new ArrayList<>();
                             points.add(new LatLng(e.p1.y,e.p1.x));
                             points.add(new LatLng(e.p2.y,e.p2.x));
                             OverlayOptions ooPolyline =  new PolylineOptions().width(5).color(Color.RED).points(points);
                             Polyline mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
                         }
                     }
-                }
             }
         }
     }
 
+    class TxtClickListener02 implements View.OnClickListener{
+        @Override
+        public void onClick(View v){
+            it.removeExtra("检测点");
+            it.removeExtra("污染物");
+            it.putExtra("检测点",nameofpoint);
+            it.putExtra("污染物",spinner1.getSelectedItem().toString());
+            startActivity(it);
+        }
+    }
     /*百度地图*/
     @Override
     protected void onDestroy() {
@@ -569,11 +576,13 @@ public class MainActivity extends AppCompatActivity {
                     public void onInfoWindowClick() {
                         //隐藏infowindow
                         mBaiduMap.hideInfoWindow();
+                        nameofpoint="安阳铁佛寺";
                     }
                 };
                 //显示infowindow
                 InfoWindow infoWindow = new InfoWindow(bitmapDescriptor, latLng, -100, listener);
                 mBaiduMap.showInfoWindow(infoWindow);
+                nameofpoint=marker.getExtraInfo().getString("info").substring(0,marker.getExtraInfo().getString("info").indexOf("\n"));
                 return true;
             }
         });
@@ -615,7 +624,7 @@ class MyDBOpenHelper extends SQLiteOpenHelper {
     @Override
     //数据库第一次创建时被调用
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE position(point text primary key,lat real,lng real,city int)");
+        db.execSQL("CREATE TABLE position(point text,lat real,lng real,city int)");
         db.execSQL("CREATE TABLE value(point text,pollution text,time text,value real)");
         db.execSQL("CREATE TABLE boundary(city int, lat real, lng real)");
         //将pos导入数据库

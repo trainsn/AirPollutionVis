@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.a12599.myapplication.Main2Activity">
+
+    <TableLayout
+        android:id="@+id/tl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:stretchColumns="0,3">
+
+        <TableRow
+            android:id="@+id/tr1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:layout_span="6"
+                android:background="@color/line" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tr2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/button1"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text1"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                style="@style/spinner"
+                android:entries="@array/time"
+                android:gravity="center|start"
+                android:paddingBottom="5dp"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:paddingTop="5dp"
+                android:prompt="@string/text21"
+                android:spinnerMode="dialog" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/line_width"
+                android:layout_height="match_parent"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/button1"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text11"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                style="@style/spinner"
+                android:entries="@array/pollution"
+                android:gravity="center|start"
+                android:paddingBottom="5dp"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:paddingTop="5dp"
+                android:prompt="@string/text11"
+                android:spinnerMode="dialog" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tr3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_width"
+                android:layout_span="6"
+                android:background="@color/line" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tr4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textviewstate"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text2"
+                android:textSize="20sp"
+                android:layout_span="2"/>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="@dimen/line_width"
+                android:layout_height="match_parent"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textviewstate"
+                android:clickable="true"
+                android:gravity="center|bottom"
+                android:paddingBottom="5sp"
+                android:paddingTop="5sp"
+                android:text="@string/text3"
+                android:textSize="20sp"
+                android:layout_span="2"/>
+        </TableRow>
+    </TableLayout>
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tl1"/>
+
+</RelativeLayout>
